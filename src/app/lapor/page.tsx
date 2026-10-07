@@ -23,7 +23,7 @@ export default function Lapor() {
           <input type="text" name="website" autoComplete="off" tabIndex={-1} aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, width: 0 }} />
           <div className="form-group">
             <label className="form-label">Tautan berkas</label>
-            <input name="url" className="form-input" placeholder="https://kyofile.example/f/xxxxxx" required />
+            <input name="url" className="form-input" placeholder="https://kyofile.galaci.my.id/f/xxxxxx" required />
           </div>
           <div className="form-group">
             <label className="form-label">Kategori</label>

@@ -201,6 +201,7 @@ export default async function FilePage({ params, searchParams }: PageProps) {
             fileName={fileName}
             slug={f.slug}
             hash={f.sha256}
+            sizeBytes={f.size_bytes}
           />
 
           <div className="file-footer-meta">

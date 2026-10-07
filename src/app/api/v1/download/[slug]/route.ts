@@ -24,22 +24,21 @@ export async function GET(_req: Request, { params }: { params: { slug: string } 
 
   const svc = backendClient(cfg.supabase_url, cfg.service_key);
   const downloadName = f.original_name || f.path;
-  const { data: signed, error } = await svc.storage
-    .from('uploads')
-    .createSignedUrl(f.path, 60, { download: downloadName });
+  // signed URL 1 jam (bukan 60 detik): user lambat tidak kepotong tengah jalan.
+  // sign + update counter jalan paralel biar redirect ~0.3 detik lebih cepat.
+  const [signedRes] = await Promise.all([
+    svc.storage.from('uploads').createSignedUrl(f.path, 3600, { download: downloadName }),
+    db.from('files').update({
+      last_access_at: new Date().toISOString(),
+      download_count: (f.download_count || 0) + 1,
+    }).eq('slug', slug),
+  ]);
+  const signed = signedRes.data;
+  const error = signedRes.error;
 
   if (error || !signed?.signedUrl) {
     return json({ error: 'download_failed' }, 502);
   }
-
-  // update counter & access time
-  await db
-    .from('files')
-    .update({
-      last_access_at: new Date().toISOString(),
-      download_count: (f.download_count || 0) + 1,
-    })
-    .eq('slug', slug);
 
   return Response.redirect(signed.signedUrl, 302);
 }
