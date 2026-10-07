@@ -4,6 +4,15 @@ Pilih berkas, dapatkan tautan instan, lalu bagikan. Tanpa akun, tanpa pelacakan.
 
 **Live:** https://kyofile.galaci.my.id
 
+![kyofile — halaman utama](docs/screenshots/home-desktop.png)
+
+<details>
+<summary>📱 Tampilan mobile</summary>
+
+![kyofile mobile](docs/screenshots/home-mobile.png)
+
+</details>
+
 ## Fitur
 
 - 📤 Upload langsung via signed URL (bytes tidak lewat server — hemat bandwidth)
