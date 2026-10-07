@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📁 kyofile — Titip & Berbagi Berkas Kilat
 
-## Getting Started
+Pilih berkas, dapatkan tautan instan, lalu bagikan. Tanpa akun, tanpa pelacakan.
 
-First, run the development server:
+**Live:** https://kyofile.galaci.my.id
+
+## Fitur
+
+- 📤 Upload langsung via signed URL (bytes tidak lewat server — hemat bandwidth)
+- 🔗 Tautan instan `/f/<slug>` berupa **lembar informasi berkas** (ukuran, tipe, SHA-256, hitungan unduhan)
+- ⤓ Tombol unduh paksa nama file asli
+- 🧬 Dedup SHA-256 — file identik langsung dapat tautan tanpa upload ulang
+- ⏳ Masa berlaku tautan: 1 jam / 1 hari / 7 hari / 30 hari / 90 hari idle
+- 🧹 Janitor otomatis tiap jam (berkas kedaluwarsa + idle purge)
+- 🛡️ Antibot tanpa captcha (honeypot + timestamp), rate-limit per IP, blocklist executable
+- 🗄️ Multi-backend storage pool dengan failover otomatis
+
+## Tech Stack
+
+Next.js 14 (App Router) · TypeScript · Supabase (Postgres + Storage) · Vercel
+
+## Jalankan Lokal
 
 ```bash
+cp .env.example .env.local   # isi nilai-nilainya
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup Database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Jalankan `supabase/schema.sql` di project Supabase meta, buat bucket
+`uploads` (private) di tiap project pool, lalu isi env sesuai `.env.example`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Struktur API
 
-## Learn More
+| Endpoint | Fungsi |
+|---|---|
+| `POST /api/v1/upload/init` | Minta tiket + signed URL |
+| `POST /api/v1/upload/finalize` | Verifikasi & catat metadata |
+| `GET /f/[slug]` | Lembar informasi berkas |
+| `GET /api/v1/download/[slug]` | Redirect signed URL (mode attachment) |
+| `GET /api/v1/file/[slug]` | Metadata JSON mesin |
+| `POST /api/v1/report` | Laporkan penyalahgunaan |
+| `GET /api/cron/janitor` | Pembersihan berkala (perlu `Bearer CRON_SECRET`) |
 
-To learn more about Next.js, take a look at the following resources:
+## Lisensi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
