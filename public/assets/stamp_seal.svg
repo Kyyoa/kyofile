@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" fill="none" stroke="#9A281A" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Circular Engraved Wax Stamp Seal for kyofile -->
+  <circle cx="70" cy="70" r="64" stroke-width="2" stroke-dasharray="4 2" opacity="0.85"/>
+  <circle cx="70" cy="70" r="58" stroke-width="1.2" opacity="0.9"/>
+  <circle cx="70" cy="70" r="42" stroke-width="0.8" opacity="0.6"/>
+  <!-- Central Star / Emblema -->
+  <path d="M 70 50 L 74 64 L 88 64 L 77 73 L 81 87 L 70 78 L 59 87 L 63 73 L 52 64 L 66 64 Z" fill="#9A281A" opacity="0.75"/>
+  <!-- Circular text -->
+  <text x="70" y="32" font-family="'IBM Plex Mono', monospace" font-size="7.5" font-weight="600" fill="#9A281A" text-anchor="middle" letter-spacing="2" opacity="0.85">TITIP BERKAS</text>
+  <text x="70" y="116" font-family="'IBM Plex Mono', monospace" font-size="7" font-weight="600" fill="#9A281A" text-anchor="middle" letter-spacing="1.5" opacity="0.85">EST. 2026 &#8226; RESMI</text>
+</svg>

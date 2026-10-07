@@ -1,27 +1,971 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* ========================================================
+   kyofile — Neo-Classical Engraving meets Mobile-First (2026)
+   ======================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #E6D8BF;
+  --paper-card: #F3E8D3;
+  --paper-light: #FAF2E3;
+  --ink: #182744;
+  --ink-deep: #0E182B;
+  --ink-muted: #64553F;
+  --accent: #9A281A;
+  --accent-hover: #7D1F13;
+  --line: rgba(24, 39, 68, 0.22);
+  --line-strong: #182744;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Spectral", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.55), transparent 75%),
+    radial-gradient(ellipse at 85% 15%, rgba(24, 39, 68, 0.05), transparent 50%),
+    repeating-linear-gradient(0deg, rgba(24, 39, 68, 0.02) 0 1px, transparent 1px 4px);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 30px;
+}
+
+/* Subtle paper texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  z-index: 99;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.16 0 0 0 0 0.29 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 32px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ========================================================
+   1. Modern Navbar
+   ======================================================== */
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0 16px;
+  border-bottom: 1px solid var(--line);
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1;
+}
+.brand-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: #2E7D32;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px #2E7D32;
+  animation: pulseDot 2.5s infinite;
+}
+@keyframes pulseDot {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+/* ========================================================
+   2. Hero Section & Solitary Bird + Angel Backdrop
+   ======================================================== */
+.hero-stage {
+  position: relative;
+  padding: 30px 0 45px;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Ethereal Angel in the Background */
+.angel-backdrop {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 820px;
+  max-width: 95vw;
+  opacity: 0.30;
+  pointer-events: none;
+  z-index: 1;
+  animation: divineFloat 8s ease-in-out infinite alternate;
+}
+.angel-backdrop img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes divineFloat {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  100% { transform: translateX(-50%) translateY(-12px) scale(1.02); }
+}
+
+/* Background Atmosphere Elements */
+.bg-radar {
+  position: absolute;
+  top: 10px;
+  left: 2%;
+  width: 110px;
+  height: 110px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 2;
+  animation: radarRotate 60s linear infinite;
+}
+@keyframes radarRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.bg-cloud-left {
+  position: absolute;
+  top: 70px;
+  left: -40px;
+  width: 220px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 2;
+  animation: cloudDrift 14s ease-in-out infinite alternate;
+}
+.bg-cloud-right {
+  position: absolute;
+  top: 100px;
+  right: -30px;
+  width: 200px;
+  opacity: 0.40;
+  pointer-events: none;
+  z-index: 2;
+  animation: cloudDrift 16s ease-in-out infinite alternate-reverse;
+}
+@keyframes cloudDrift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(15px); }
+}
+
+/* Single Majestic Soaring Bird in Sky */
+.hero-solo-bird {
+  position: absolute;
+  top: 35px;
+  right: 14%;
+  width: 130px;
+  opacity: 0.82;
+  pointer-events: none;
+  z-index: 5;
+  animation: birdGlideSolo 9s ease-in-out infinite alternate;
+}
+.hero-solo-bird img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+@keyframes birdGlideSolo {
+  0% { transform: translateY(0) rotate(5deg) scale(1); }
+  50% { transform: translateY(-14px) rotate(8deg) scale(1.03); }
+  100% { transform: translateY(8px) rotate(2deg) scale(0.98); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 28px;
+}
+.hero-pretitle {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 8vw, 5.4rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink-deep);
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-style: italic;
+  color: var(--ink);
+  max-width: 540px;
+  margin: 10px auto 0;
+  line-height: 1.45;
+}
+
+/* ========================================================
+   3. Central Upload Stage & Flanking Floating Hands
+   ======================================================== */
+.stage-container {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  z-index: 15;
+}
+
+/* Floating Hands */
+.floating-hand {
+  position: absolute;
+  top: 48%;
+  width: 220px;
+  pointer-events: none;
+  z-index: 20;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.floating-hand img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hand-left {
+  left: -190px;
+  transform: translateY(-50%);
+  animation: floatLeft 6.5s ease-in-out infinite alternate;
+}
+.hand-right {
+  right: -190px;
+  transform: translateY(-50%);
+  animation: floatRight 6.5s ease-in-out infinite alternate 1.8s;
+}
+
+@keyframes floatLeft {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  50% { transform: translateY(-58%) rotate(-2deg); }
+  100% { transform: translateY(-44%) rotate(1deg); }
+}
+
+@keyframes floatRight {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  50% { transform: translateY(-42%) rotate(2deg); }
+  100% { transform: translateY(-56%) rotate(-1deg); }
+}
+
+.stage-container.is-dragover .hand-left {
+  transform: translateY(-50%) translateX(25px) scale(1.05);
+}
+.stage-container.is-dragover .hand-right {
+  transform: translateY(-50%) translateX(-25px) scale(1.05);
+}
+
+/* The Upload Card */
+.upload-card {
+  background: var(--paper-card);
+  border: 1px solid var(--line-strong);
+  outline: 1px solid var(--line-strong);
+  outline-offset: 5px;
+  box-shadow:
+    0 10px 0 rgba(24, 39, 68, 0.08),
+    0 24px 48px rgba(24, 39, 68, 0.08);
+  padding: 32px 34px;
+  position: relative;
+  text-align: left;
+}
+
+/* Tactile Red Stamp Seal on Card */
+.card-stamp {
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+  z-index: 25;
+  transform: rotate(-10deg);
+  opacity: 0.88;
+  filter: drop-shadow(0 2px 4px rgba(24, 39, 68, 0.1));
+  transition: transform 0.3s ease;
+}
+.stage-container:hover .card-stamp {
+  transform: rotate(-6deg) scale(1.05);
+}
+
+/* Corner Marks */
+.corner-mark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+.corner-mark::before, .corner-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--line-strong);
+}
+.corner-mark.top-left { top: -1px; left: -1px; }
+.corner-mark.top-left::before { top: 0; left: 0; width: 10px; height: 1px; }
+.corner-mark.top-left::after { top: 0; left: 0; width: 1px; height: 10px; }
+
+.corner-mark.top-right { top: -1px; right: -1px; }
+.corner-mark.top-right::before { top: 0; right: 0; width: 10px; height: 1px; }
+.corner-mark.top-right::after { top: 0; right: 0; width: 1px; height: 10px; }
+
+.corner-mark.bottom-left { bottom: -1px; left: -1px; }
+.corner-mark.bottom-left::before { bottom: 0; left: 0; width: 10px; height: 1px; }
+.corner-mark.bottom-left::after { bottom: 0; left: 0; width: 1px; height: 10px; }
+
+.corner-mark.bottom-right { bottom: -1px; right: -1px; }
+.corner-mark.bottom-right::before { bottom: 0; right: 0; width: 10px; height: 1px; }
+.corner-mark.bottom-right::after { bottom: 0; right: 0; width: 1px; height: 10px; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  padding-right: 64px;
+  border-bottom: 1px solid var(--line);
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.card-spec {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+}
+
+/* Modern Tactile Dropzone */
+.dropzone {
+  border: 1.5px dashed var(--line-strong);
+  background: var(--paper-light);
+  box-shadow: inset 0 2px 5px rgba(24, 39, 68, 0.04);
+  padding: 34px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.dropzone:hover, .dropzone.is-active {
+  background: #FFFDF9;
+  border-style: solid;
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent), 0 4px 12px rgba(154, 40, 26, 0.08);
+}
+.dropzone.has-file {
+  background: #FFFDF9;
+  border-style: solid;
+  border-color: var(--line-strong);
+}
+.drop-icon-wrapper {
+  margin-bottom: 10px;
+}
+.drop-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-card);
+  font-size: 1.3rem;
+  color: var(--ink);
+  transition: transform 0.2s ease;
+}
+.dropzone:hover .drop-icon {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.drop-main-text {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.drop-sub-text {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+/* Expiry Pills Selector */
+.control-row {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.control-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+}
+.pill-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.pill-btn {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 9px 4px;
+  text-align: center;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.pill-btn:hover {
+  border-color: var(--ink);
+}
+.pill-btn.active {
+  background: var(--ink-deep);
+  color: var(--paper-light);
+  border-color: var(--ink-deep);
+  font-weight: 600;
+  box-shadow: 0 2px 0 var(--ink-deep);
+}
+
+/* Action Buttons */
+.action-row {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+.btn-upload {
+  flex: 1;
+  background: var(--accent);
+  color: #FFFDF9;
+  border: 1px solid var(--ink-deep);
+  padding: 14px 20px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--ink-deep);
+  transition: all 0.15s ease;
+}
+.btn-upload:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--ink-deep);
+}
+.btn-upload:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--ink-deep);
+}
+.btn-reset {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 14px 18px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-reset:hover {
+  background: rgba(24, 39, 68, 0.06);
+  border-color: var(--ink);
+}
+
+/* Progress & Meta */
+.file-meta-bar {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.file-meta-bar code {
+  font-family: var(--font-mono);
+  color: var(--ink);
+  font-size: 0.8rem;
+  background: var(--paper-light);
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+  display: inline-block;
+}
+.upload-progress {
+  height: 7px;
+  background: var(--paper-light);
+  border: 1px solid var(--ink);
+  margin-top: 10px;
+  overflow: hidden;
+}
+.upload-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent),
+    var(--accent) 8px,
+    var(--ink-deep) 8px,
+    var(--ink-deep) 16px
+  );
+  transition: width 0.15s linear;
+}
+
+/* Result Box */
+.result-box {
+  margin-top: 20px;
+  border: 1px solid var(--line-strong);
+  background: #FFFDF9;
+  padding: 18px;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.result-header {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.result-link-display {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  word-break: break-all;
+  color: var(--ink-deep);
+  padding: 8px 12px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+/* ========================================================
+   4. Static Bottom Nav Dock (Anteng di Dasar Halaman)
+   ======================================================== */
+.bottom-nav {
+  position: relative;
+  margin: 36px auto 16px;
+  width: 100%;
+  max-width: 500px;
+  background: var(--paper-card);
+  border: 1px solid var(--line-strong);
+  outline: 1px solid var(--line-strong);
+  outline-offset: 3px;
+  box-shadow:
+    0 4px 0 rgba(24, 39, 68, 0.08),
+    0 12px 24px rgba(24, 39, 68, 0.06);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 4px;
+  z-index: 10;
+  border-radius: 2px;
+}
+.site-footer-note {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.05em;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--ink-muted);
+  padding: 6px 10px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  min-width: 58px;
+  border-radius: 2px;
+}
+.bottom-nav-item:hover {
+  color: var(--ink-deep);
+}
+.bottom-nav-item.active {
+  background: var(--ink-deep);
+  color: var(--paper-light);
+  box-shadow: 0 2px 0 var(--ink-deep);
+}
+.bottom-nav-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.bottom-nav-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ========================================================
+   5. Dedicated Page Containers (Fitur, API, Ketentuan, Lapor)
+   ======================================================== */
+.page-container {
+  padding: 24px 0 40px;
+}
+.page-header-block {
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+.page-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--ink-deep);
+}
+.page-desc {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  max-width: 560px;
+  margin: 10px auto 0;
+}
+
+/* Grid & Cards for Subpages */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.content-card {
+  background: var(--paper-card);
+  border: 1px solid var(--line-strong);
+  padding: 26px 24px;
+  position: relative;
+  box-shadow: 0 4px 0 var(--line-strong);
+}
+.content-card-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.content-card-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink-deep);
+}
+.content-card-body {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* Code & Terminal styling for API Page */
+.terminal-card {
+  background: var(--ink-deep);
+  color: var(--paper-light);
+  border: 1px solid var(--ink);
+  padding: 24px 28px;
+  box-shadow: 0 6px 0 var(--ink);
+  margin-bottom: 24px;
+}
+.terminal-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--paper-light);
+  margin-bottom: 8px;
+}
+.terminal-pre {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #D6CBB8;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 16px;
+  border: 1px solid rgba(232, 220, 196, 0.15);
+  margin-top: 12px;
+}
+
+/* Form Styling for Lapor Page */
+.form-card {
+  background: var(--paper-card);
+  border: 1px solid var(--line-strong);
+  outline: 1px solid var(--line-strong);
+  outline-offset: 4px;
+  box-shadow: 0 6px 0 var(--line-strong);
+  padding: 30px 28px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.form-input, .form-textarea {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--accent);
+  background: #FFFDF9;
+}
+
+/* ========================================================
+   5.5. Lembar Informasi Berkas (/f/[slug])
+   ======================================================== */
+.file-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4.2vw, 2.3rem);
+  font-weight: 700;
+  color: var(--ink-deep);
+  line-height: 1.15;
+  margin: 6px 0 10px;
+  word-break: break-word;
+  letter-spacing: 0.01em;
+}
+
+.file-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.file-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 540px) {
+  .file-stat-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.file-stat-box {
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  border-radius: 2px;
+  position: relative;
+}
+.file-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 4px;
+}
+.file-stat-value {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-deep);
+  word-break: break-all;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.file-hash-bar {
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s ease;
+}
+.file-hash-bar:hover {
+  background: #FFFDF9;
+  border-color: var(--line-strong);
+}
+.file-hash-bar span.hash-key {
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.file-hash-bar span.hash-val {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 720px) {
+  .file-hash-bar span.hash-val {
+    white-space: normal;
+    word-break: break-all;
+  }
+}
+
+.file-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.file-action-row .btn-upload,
+.file-action-row .btn-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  text-align: center;
+}
+.file-action-row .btn-download-file {
+  flex: 1.4;
+  min-width: 170px;
+}
+
+.file-footer-meta {
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+  margin-top: 6px;
+  font-size: 0.76rem;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  font-family: var(--font-mono);
+}
+.file-footer-meta a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.file-footer-meta a:hover {
+  color: var(--accent);
+}
+
+/* ========================================================
+   6. Responsive Mobile Tweaks
+   ======================================================== */
+@media (max-width: 960px) {
+  .floating-hand {
+    display: none; /* Hide flanking hands on tablet/mobile to prevent clutter */
+  }
+  .stage-container {
+    max-width: 100%;
+  }
+  .hero-solo-bird {
+    right: 6%;
+    width: 105px;
+    opacity: 0.75;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-stamp {
+    right: 6px;
+    top: -18px;
+    width: 70px;
+    height: 70px;
+  }
+  .upload-card {
+    padding: 22px 18px;
+  }
+  .pill-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .action-row {
+    flex-direction: column;
+  }
+  .hero-stage {
+    padding: 20px 0 35px;
   }
 }

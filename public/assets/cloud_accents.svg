@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" fill="none" stroke="#182744" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Classical Etched Cloud Wave / Cumulus contours with fine hatching -->
+  <g opacity="0.35" stroke-width="1.1">
+    <!-- Outer cloud billow contours -->
+    <path d="M 10 75 C 25 55, 45 48, 70 52 C 90 30, 130 25, 160 42 C 185 20, 230 18, 260 38 C 285 30, 310 45, 315 75 Z" />
+    <path d="M 45 68 C 65 52, 95 55, 115 65" />
+    <path d="M 130 55 C 155 42, 190 44, 210 58" />
+    <path d="M 225 50 C 248 38, 275 42, 290 60" />
+    
+    <!-- Etched Hatching lines for cloud shading -->
+    <path d="M 50 62 L 58 72 M 65 58 L 73 70 M 80 56 L 88 68 M 95 56 L 103 68 M 110 58 L 118 70" stroke-width="0.7" opacity="0.6" />
+    <path d="M 140 48 L 148 60 M 155 46 L 163 58 M 170 46 L 178 58 M 185 48 L 193 60 M 200 52 L 208 64" stroke-width="0.7" opacity="0.6" />
+    <path d="M 235 44 L 243 56 M 250 42 L 258 54 M 265 44 L 273 56 M 280 48 L 288 60" stroke-width="0.7" opacity="0.6" />
+  </g>
+</svg>

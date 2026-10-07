@@ -1,0 +1,1 @@
+{"crons":[{"path":"/api/cron/janitor","schedule":"0 3 * * *"}],"regions":["syd1"]}

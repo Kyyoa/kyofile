@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" fill="none" stroke="#182744" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Classical Engraved Dove in Soaring Flight -->
+  <g stroke-width="1.4">
+    <!-- Body & Head -->
+    <path d="M 60 42 C 58 35, 62 26, 68 22 C 73 19, 78 20, 81 23 C 83 24, 86 23, 88 24 C 86 26, 83 27, 81 28 C 76 34, 69 44, 60 48 Z" fill="#182744" />
+    <circle cx="79" cy="23" r="1" fill="#FAF2E3" stroke="none" />
+    <!-- Beak -->
+    <polygon points="86,23 92,24 85,26" fill="#182744" stroke="none" />
+    <!-- Left Wing (Spread high and back) -->
+    <path d="M 62 34 C 55 24, 40 12, 22 8 C 28 15, 34 22, 38 30 C 44 38, 52 42, 58 43 Z" fill="#182744" />
+    <!-- Left Wing Feather Hatching -->
+    <path d="M 22 8 C 26 14, 30 20, 32 28 M 28 11 C 32 17, 36 24, 38 31 M 35 15 C 38 21, 41 28, 43 35 M 42 19 C 45 25, 48 31, 50 38" stroke="#FAF2E3" stroke-width="0.8" />
+    <!-- Feather tips primary -->
+    <path d="M 22 8 C 18 12, 16 18, 15 24 C 18 23, 22 22, 26 21 M 15 24 C 13 30, 14 36, 17 40 C 20 37, 24 35, 28 34 M 17 40 C 18 45, 22 48, 27 50 C 29 46, 32 43, 36 41" fill="#182744" stroke-width="0.8" />
+    
+    <!-- Right Wing (Extended outward in perspective) -->
+    <path d="M 68 32 C 75 22, 88 12, 106 6 C 100 13, 93 20, 87 27 C 81 33, 76 38, 70 40 Z" fill="#182744" />
+    <path d="M 106 6 C 101 12, 96 18, 92 24 M 100 9 C 95 15, 90 21, 86 27 M 93 13 C 89 19, 85 25, 81 30" stroke="#FAF2E3" stroke-width="0.8" />
+    <!-- Right Wing feather tips -->
+    <path d="M 106 6 C 109 11, 110 16, 109 22 C 105 21, 101 20, 97 19 M 109 22 C 110 27, 108 33, 104 36 C 101 34, 97 32, 94 30" fill="#182744" stroke-width="0.8" />
+    
+    <!-- Fan Tail Feathers -->
+    <path d="M 60 46 C 54 50, 46 56, 40 64 C 47 62, 54 60, 59 56 C 62 60, 66 63, 72 65 C 69 58, 66 52, 63 46 Z" fill="#182744" />
+    <path d="M 40 64 C 48 59, 55 54, 59 48 M 48 63 C 54 58, 59 53, 62 48 M 56 63 C 60 58, 63 53, 64 48 M 72 65 C 68 59, 65 53, 63 47" stroke="#FAF2E3" stroke-width="0.8" />
+  </g>
+</svg>
