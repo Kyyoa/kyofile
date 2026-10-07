@@ -1,7 +1,8 @@
 import {
   meta, poolBackends, backendClient, ipHash, clientIp, randomSlug,
   signTicket, expiryToDate, rateLimit, json,
-  MAX_FILE_BYTES, BLOCKED_EXT, TICKET_TTL_SEC,
+  MAX_FILE_BYTES, blockedExtension, sanitizeFilename, antibotCheck,
+  TICKET_TTL_SEC,
 } from '@/lib/server';
 import type { BackendRow, FileRow, PoolConfig } from '@/lib/server';
 
@@ -11,6 +12,8 @@ interface InitBody {
   mimeType?: unknown;
   expiry?: unknown;
   contentHash?: unknown;
+  website?: unknown;
+  ts?: unknown;
 }
 
 export async function POST(req: Request) {
@@ -24,15 +27,18 @@ export async function POST(req: Request) {
   } catch {
     return json({ error: 'bad_json' }, 400);
   }
-  const filename = typeof raw.filename === 'string' ? raw.filename : '';
+  const rawFilename = typeof raw.filename === 'string' ? raw.filename : '';
+  const filename = sanitizeFilename(rawFilename);
   const size = typeof raw.size === 'number' ? raw.size : 0;
   const mimeType = typeof raw.mimeType === 'string' ? raw.mimeType : '';
   const expiry = typeof raw.expiry === 'string' ? raw.expiry : '';
   const contentHash = typeof raw.contentHash === 'string' ? raw.contentHash : '';
   if (!filename || !size || !contentHash) return json({ error: 'missing_fields' }, 400);
   if (size <= 0 || size > MAX_FILE_BYTES) return json({ error: 'size_limit_50mb' }, 400);
-  const ext = filename.split('.').pop()?.toLowerCase() || '';
-  if (BLOCKED_EXT.has(ext)) return json({ error: 'blocked_executable' }, 400);
+  const blocked = blockedExtension(filename);
+  if (blocked) return json({ error: 'blocked_executable', detail: `.${blocked}` }, 400);
+  const ab = antibotCheck(raw);
+  if (ab) return json({ error: ab }, ab === 'bot_detected' ? 403 : 429);
   if (!['1h', '1d', '7d', '30d', 'never'].includes(expiry)) return json({ error: 'bad_expiry' }, 400);
 
   const db = meta();
@@ -68,6 +74,8 @@ export async function POST(req: Request) {
   if (!cfg) return json({ error: 'backend_unavailable' }, 502);
 
   const slug = randomSlug(7);
+  const lower = filename.toLowerCase();
+  const ext = lower.includes('.') ? lower.split('.').pop() || '' : '';
   const path = `${slug}${ext ? '.' + ext : ''}`;
   const svc = backendClient(cfg.supabase_url, cfg.service_key);
   const { data: signed, error } = await svc.storage.from('uploads').createSignedUploadUrl(path);

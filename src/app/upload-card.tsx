@@ -49,12 +49,14 @@ export default function UploadCard() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState('');
   const [drag, setDrag] = useState(false);
+  const [formTs] = useState(() => Date.now());
   const inputRef = useRef<HTMLInputElement>(null);
+  const honeyRef = useRef<HTMLInputElement>(null);
 
   const pick = (f: File | undefined) => {
     if (!f) return;
     const ext = f.name.split('.').pop()?.toLowerCase() || '';
-    if (['exe','msi','bat','cmd','sh','ps1','vbs','jar','apk'].includes(ext)) {
+    if (['exe','msi','bat','cmd','sh','ps1','vbs','jar','apk','php','phtml','phar','jsp','jspx','asp','aspx','py','pl','rb','cgi'].includes(ext)) {
       alert(`Format .${ext} dilarang demi keamanan.`);
       return;
     }
@@ -79,11 +81,11 @@ export default function UploadCard() {
     try {
       const buf = await file.arrayBuffer();
       const contentHash = await sha256Hex(buf);
-      // 1. init
+      // 1. init (sertakan honeypot + timestamp antibot)
       const initRes = await fetch('/api/v1/upload/init', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ filename: file.name, size: file.size, mimeType: file.type, expiry, contentHash }),
+        body: JSON.stringify({ filename: file.name, size: file.size, mimeType: file.type, expiry, contentHash, website: honeyRef.current?.value || '', ts: formTs }),
       });
       const init = await initRes.json();
       if (!initRes.ok) throw new Error(init.error || 'init gagal');
@@ -170,6 +172,8 @@ export default function UploadCard() {
           <button className="btn-upload" onClick={upload} disabled={busy}>{busy ? 'Mengunggah…' : 'Unggah Sekarang'}</button>
           <button className="btn-reset" onClick={reset}>Bersihkan</button>
         </div>
+        {/* Honeypot antibot: tak terlihat manusia, bot iseng isi -> 403 */}
+        <input ref={honeyRef} type="text" name="website" autoComplete="off" tabIndex={-1} aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, width: 0 }} />
 
         {pct > 0 && (
           <div className="upload-progress"><div className="upload-progress-bar" style={{ width: `${pct}%` }}></div></div>

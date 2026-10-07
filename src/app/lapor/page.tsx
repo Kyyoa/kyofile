@@ -15,9 +15,12 @@ export default function Lapor() {
           e.preventDefault();
           const fd = new FormData(e.currentTarget as HTMLFormElement);
           await fetch('/api/v1/report', { method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ slugOrUrl: fd.get('url'), reason: `${fd.get('reason')}: ${fd.get('details')}` }) });
+            body: JSON.stringify({ slugOrUrl: fd.get('url'), reason: `${fd.get('reason')}: ${fd.get('details')}`, website: fd.get('website') || '', ts: Number(fd.get('ts')) || 0 }) });
           setDone(true);
         }}>
+          <input type="hidden" name="ts" value={Date.now()} />
+          {/* Honeypot antibot */}
+          <input type="text" name="website" autoComplete="off" tabIndex={-1} aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, width: 0 }} />
           <div className="form-group">
             <label className="form-label">Tautan berkas</label>
             <input name="url" className="form-input" placeholder="https://kyofile.example/f/xxxxxx" required />
